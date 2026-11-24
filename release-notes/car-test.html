@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<title>Car test</title>
+<style>
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:-apple-system, Segoe UI, Roboto, Helvetica Neue, sans-serif;font-size:28pt;line-height:1.2;color:#000000;background-color:transparent}
+body.darkMode{color:#ffffff;background-color:transparent}
+@media (prefers-color-scheme: dark){body{color:#ffffff;background-color:transparent}}
+dl{margin:0}
+dt{font-size:16pt;opacity:0.7;margin-top:0.7em}
+dd{margin:0;word-break:break-all}
+</style>
+</head>
+<body>
+<dl>
+<dt>URL</dt><dd id="url">-</dd>
+<dt>User agent</dt><dd id="ua">-</dd>
+<dt>Viewport</dt><dd id="vp">-</dd>
+<dt>devicePixelRatio</dt><dd id="dpr">-</dd>
+<dt>prefers-color-scheme</dt><dd id="pcs">-</dd>
+<dt>Time</dt><dd id="time">-</dd>
+</dl>
+<script>
+(function(){
+  function el(id){return document.getElementById(id);}
+  function pad(n){return (n<10?'0':'')+n;}
+  function scheme(){
+    if(!window.matchMedia) return 'unsupported';
+    if(window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+    if(window.matchMedia('(prefers-color-scheme: light)').matches) return 'light';
+    return 'no-preference';
+  }
+  function update(){
+    var d=new Date();
+    el('url').textContent=window.location.href;
+    el('ua').textContent=navigator.userAgent;
+    el('vp').textContent=window.innerWidth+' x '+window.innerHeight+' (screen '+screen.width+' x '+screen.height+')';
+    el('dpr').textContent=String(window.devicePixelRatio||1);
+    el('pcs').textContent=scheme();
+    el('time').textContent=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+  }
+  if(/[?&]darkMode=true(?:&|#|$)/i.test(window.location.search)){document.body.className+=' darkMode';}
+  update();
+  setInterval(update,1000);
+  window.addEventListener('resize',update);
+})();
+</script>
+</body>
+</html>
